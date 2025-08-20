@@ -37,22 +37,10 @@ public class YahtzeeProcedural {
         }
     }
 
-    /**
-     * Demande à l'utilisateur si il veut relancer des dés ou non
-     *
-     * @return Le résultat de sa réponse
-     */
-    public static boolean relancer() {
-        boolean result = false;
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("\n\nVoulez vous relancer un dé ? (o/n) : ");
-        String lettreSaisie = scanner.next();
 
-        // Vérifie la lettre saisie
-        if (lettreSaisie.equals("o") || lettreSaisie.equals("O")) {
-            result = true;
-        }
-        return result;
+
+    public static void relancerDes(int[] mesDes) {
+        mesDes[/*remplacer 2 par le nomreSaisi*/2 - 1] = lancerDe();
     }
 
     /**
@@ -60,28 +48,28 @@ public class YahtzeeProcedural {
      *
      * @param mesDes Liste dans laqelle sont stockés les dés
      */
-    public static void relancerDes(int[] mesDes) {
+    public static void demandeRelancerDes(int[] mesDes) {
         Scanner scanner = new Scanner(System.in);
-        if (relancer()) {
-            for (int i = 0; i < NOMBRE_RELANCE_MAX; i++) {
+        boolean resaisir = true;
+        do {
+            System.out.print("\nDé à relancer : ");
+            // TODO : faire pour que les nombres saisi s'inscrivent dans une liste
+            int nombreSaisi1 = scanner.nextInt();
+            int nombreSaisi2 = scanner.nextInt();
+            int nombreSaisi3 = scanner.nextInt();
 
-                boolean resaisir = true;
-                do {
-                    System.out.print("\nDé à relancer : ");
-                    int nombreSaisi = scanner.nextInt();
+            // Vérifie la saisi
+            if (nombreSaisi1 >=1 && nombreSaisi1 <= mesDes.length || nombreSaisi2 >=1 && nombreSaisi2 <= mesDes.length || nombreSaisi3 >=1 && nombreSaisi3 <= mesDes.length) {
 
-                    if (nombreSaisi >= 1 && nombreSaisi <= mesDes.length) {
-                        mesDes[nombreSaisi - 1] = lancerDe();
-                        System.out.println("\nNouvelle liste : ");
-                        resaisir = false;
-                        afficherDes(mesDes);
-                    } else {
-                        System.out.print("\nVeuillez saisir un nombre entre 1 et " + mesDes.length);
-                    }
-                } while (resaisir);
-
+            } else {
+                System.out.println("Certain nombre saisi ne sont pas conforme.\nVeuillez recommencé.\n");
             }
-        }
+
+
+
+        } while (resaisir);
+
+
     }
 
 
@@ -89,7 +77,7 @@ public class YahtzeeProcedural {
         int[] mesDes = new int[NOMBRE_DES_A_LANCER];
         lancerPlusieursDes(mesDes);
         afficherDes(mesDes);
-        relancerDes(mesDes);
+        demandeRelancerDes(mesDes);
 
     }
 }
