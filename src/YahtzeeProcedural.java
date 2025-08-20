@@ -1,17 +1,14 @@
-import java.util.Collections;
-
 public class YahtzeeProcedural {
 
     public static int lancerDe (){
         return (int) (Math.random() * 6 + 1);
     }
 
-    public static int[] lancer5Des(int[] mesDes){
+    public static void lancer5Des(int[] mesDes){
         for (int i = 0; i < mesDes.length; i++) {
             int des = lancerDe();
             mesDes[i] = des;
         }
-        return mesDes;
     }
 
     public static void afficherDes(int[] mesDes){
