@@ -6,6 +6,7 @@ public class YahtzeeProcedural {
 
     /**
      * Lance un dé
+     *
      * @return un nombre aléatoire compris entre 1 et 6
      */
     public static int lancerDe() {
@@ -14,6 +15,7 @@ public class YahtzeeProcedural {
 
     /**
      * Lance plusieurs dés
+     *
      * @param mesDes Liste dans laqelle sont stockés les dés
      */
     public static void lancerPlusieursDes(int[] mesDes) {
@@ -25,6 +27,7 @@ public class YahtzeeProcedural {
 
     /**
      * Affiche les dés contenu dans le tableau
+     *
      * @param mesDes Liste dans laqelle sont stockés les dés
      */
     public static void afficherDes(int[] mesDes) {
@@ -35,27 +38,33 @@ public class YahtzeeProcedural {
 
     /**
      * Permet de relancer certain dé
-     * @param mesDes
+     * @param mesDes Liste dans laqelle sont stockés les dés
      */
     public static void relancerDes(int[] mesDes) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Voulez vous relancer un dé ? (o/n) ");
+        System.out.print("\nVoulez vous relancer un dé ? (o/n) ");
         String lettreSaisie = scanner.next();
 
         // Vérifie la lettre saisie
         if (lettreSaisie.equals("o") || lettreSaisie.equals("O")) {
-            System.out.print("\nDé à relancer : ");
-            int nombreSaisi =  scanner.nextInt();
+            boolean resaisir = true;
+            do {
+                System.out.print("\nDé à relancer : ");
+                int nombreSaisi = scanner.nextInt();
+                resaisir = false;
+                if (nombreSaisi <= 0 || nombreSaisi > mesDes.length) {
+                    System.out.print("\nVeuillez saisir un nombre entre 1 et " + mesDes.length);
+                    resaisir = true;
+                } else {
+                    mesDes[nombreSaisi - 1] = lancerDe();
+                    System.out.println("\nNouvelle liste : ");
+                    afficherDes(mesDes);
+                }
 
+            } while (resaisir);
         }
 
 
-
-
-
-        //System.out.println("Veuillez saisir un nombre entre 1 et " + mesDes.length);
-
-        //mesDes[nombreSaisi - 1] = 9;
 
 
     }
@@ -66,7 +75,6 @@ public class YahtzeeProcedural {
         afficherDes(mesDes);
         relancerDes(mesDes);
 
-        afficherDes(mesDes);
     }
 }
 
