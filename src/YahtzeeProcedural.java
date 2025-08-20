@@ -25,4 +25,8 @@ public class YahtzeeProcedural {
         lancer5Des(mesDes);
         afficherDes(mesDes);
     }
+
+
+
+    //test
 }
