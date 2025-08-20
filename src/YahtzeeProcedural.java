@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class YahtzeeProcedural {
     public static final int NOMBRE_FACE_DE = 6;
     public static final int NOMBRE_DES_A_LANCER = 5;
+    public static final int NOMBRE_RELANCE_MAX = 3;
 
     /**
      * Lance un dé
@@ -37,37 +38,52 @@ public class YahtzeeProcedural {
     }
 
     /**
-     * Permet de relancer certain dé
-     * @param mesDes Liste dans laqelle sont stockés les dés
+     * Demande à l'utilisateur si il veut relancer des dés ou non
+     *
+     * @return Le résultat de sa réponse
      */
-    public static void relancerDes(int[] mesDes) {
+    public static boolean relancer() {
+        boolean result = false;
         Scanner scanner = new Scanner(System.in);
-        System.out.print("\nVoulez vous relancer un dé ? (o/n) ");
+        System.out.print("\n\nVoulez vous relancer un dé ? (o/n) : ");
         String lettreSaisie = scanner.next();
 
         // Vérifie la lettre saisie
         if (lettreSaisie.equals("o") || lettreSaisie.equals("O")) {
-            boolean resaisir = true;
-            do {
-                System.out.print("\nDé à relancer : ");
-                int nombreSaisi = scanner.nextInt();
-                resaisir = false;
-                if (nombreSaisi <= 0 || nombreSaisi > mesDes.length) {
-                    System.out.print("\nVeuillez saisir un nombre entre 1 et " + mesDes.length);
-                    resaisir = true;
-                } else {
-                    mesDes[nombreSaisi - 1] = lancerDe();
-                    System.out.println("\nNouvelle liste : ");
-                    afficherDes(mesDes);
-                }
-
-            } while (resaisir);
+            result = true;
         }
-
-
-
-
+        return result;
     }
+
+    /**
+     * Permet de relancer certain dé
+     *
+     * @param mesDes Liste dans laqelle sont stockés les dés
+     */
+    public static void relancerDes(int[] mesDes) {
+        Scanner scanner = new Scanner(System.in);
+        if (relancer()) {
+            for (int i = 0; i < NOMBRE_RELANCE_MAX; i++) {
+
+                boolean resaisir = true;
+                do {
+                    System.out.print("\nDé à relancer : ");
+                    int nombreSaisi = scanner.nextInt();
+
+                    if (nombreSaisi >= 1 && nombreSaisi <= mesDes.length) {
+                        mesDes[nombreSaisi - 1] = lancerDe();
+                        System.out.println("\nNouvelle liste : ");
+                        resaisir = false;
+                        afficherDes(mesDes);
+                    } else {
+                        System.out.print("\nVeuillez saisir un nombre entre 1 et " + mesDes.length);
+                    }
+                } while (resaisir);
+
+            }
+        }
+    }
+
 
     public static void main(String[] args) {
         int[] mesDes = new int[NOMBRE_DES_A_LANCER];
