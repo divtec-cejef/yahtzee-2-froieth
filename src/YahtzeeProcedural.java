@@ -44,11 +44,12 @@ public class YahtzeeProcedural {
      *
      * @param mesDes Liste des dés
      */
-    public static void relancerDes(int[] mesDes, int[] deARelancer) {
-        for (int i = 0; i < NOMBRE_DES_A_LANCER; i++) {
+    public static void relancerDes(int[] mesDes, int[] deARelancer, int nbreDesChoisis) {
+        for (int i = 0; i < nbreDesChoisis; i++) {
             mesDes[deARelancer[i]] = lancerDe();
         }
     }
+
 
     /**
      * Demande à l'utilisateur les dés qu'il veut relancer et les relances
@@ -61,7 +62,7 @@ public class YahtzeeProcedural {
         boolean finRelance = false;
         do {
             // Tableau qui contient les dés à relanceruel
-            int[] deARelancer = new int[NOMBRE_DES_A_LANCER];
+            //int[] deARelancer = new int[NOMBRE_DES_A_LANCER];
 
             System.out.print("\nDé à relancer : ");
             String ligne = scanner.nextLine().trim();
@@ -69,19 +70,21 @@ public class YahtzeeProcedural {
             // Vérifie si la ligne est pleine
             if (!ligne.isEmpty()) {
                 String[] parties = ligne.split("\\s+");
-                int index = 0;
+                int[] deARelancer = new int[parties.length];
 
+                int index = 0;
                 for (String party : parties) {
                     int valeur = Integer.parseInt(party);
                     deARelancer[index++] = valeur - 1;
                 }
-                relancerDes(mesDes, deARelancer);
+                relancerDes(mesDes, deARelancer, index);
+
             } else {
                 finRelance = true;
             }
             afficherDes(mesDes);
             nbreBoucle--;
-            Arrays.fill(deARelancer, 0);
+            //Arrays.fill(deARelancer, 0);
             if (nbreBoucle == 0) {
                 finRelance = true;
             }
