@@ -45,7 +45,7 @@ public class YahtzeeProcedural {
      * @param mesDes
      */
     public static void relancerDes(int[] mesDes, int[] deARelancer) {
-        for (int i = 0; i < NOMBRE_DES_A_LANCER; i++) {
+        for (int i = 0; i < deARelancer.length; i++) {
             mesDes[deARelancer[i]] = lancerDe();
         }
     }
@@ -74,21 +74,11 @@ public class YahtzeeProcedural {
                     String[] parties = ligne.split("\\s+");
                     int index = 0;
 
-                    for (int i = 0; i < parties.length && index < NOMBRE_DES_A_LANCER; i++) {
-                        // Vérifie si la saisi est valide
-                        try {
-                            int valeur = Integer.parseInt(parties[i]);
-                            if (valeur >= 1 && valeur <= 5) {
-                                deARelancer[index++] = valeur - 1;
-                            } else {
-                                System.out.println("La valeur '" + valeur + "' est hors limite.");
-                                ressaisir = true;
-                            }
-                        } catch (NumberFormatException e) {
-                            System.out.println("La valeur '" + parties[i] + "' n'est pas valide.");
-                            ressaisir = true;
-                        }
+                    for (int i = 0; i < parties.length; i++) {
+                        int valeur = Integer.parseInt(parties[i]);
+                        deARelancer[index++] = valeur - 1;
                     }
+                    relancerDes(mesDes, deARelancer);
                 } else {
                     finRelance = true;
                 }
@@ -100,7 +90,6 @@ public class YahtzeeProcedural {
                     }
                 }
             } while (ressaisir);
-            relancerDes(mesDes, deARelancer);
             afficherDes(mesDes);
             nbreBoucle--;
             for (int i = 0; i < deARelancer.length; i++) {
