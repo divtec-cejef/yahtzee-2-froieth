@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class YahtzeeProcedural {
@@ -38,38 +39,61 @@ public class YahtzeeProcedural {
     }
 
 
-
-    public static void relancerDes(int[] mesDes) {
-        mesDes[/*remplacer 2 par le nomreSaisi*/2 - 1] = lancerDe();
+    /**
+     * Relance les certains dés
+     *
+     * @param mesDes
+     */
+    public static void relancerDes(int[] mesDes, int[] deARelancer) {
+        for (int i = 0; i < NOMBRE_RELANCE_MAX; i++) {
+            mesDes[deARelancer[i]] = lancerDe();
+        }
     }
 
     /**
-     * Permet de relancer certain dé
+     * Demande à l'utilisateur les dés qu'il veut relancer et les relances
      *
      * @param mesDes Liste dans laqelle sont stockés les dés
      */
     public static void demandeRelancerDes(int[] mesDes) {
         Scanner scanner = new Scanner(System.in);
-        boolean resaisir = true;
+        // Tableau qui contient les dés à relanceruel
+        int[] deARelancer = new int[NOMBRE_RELANCE_MAX];
+        boolean ressaisir =  true;
         do {
+            ressaisir = false;
+
             System.out.print("\nDé à relancer : ");
-            // TODO : faire pour que les nombres saisi s'inscrivent dans une liste
-            int nombreSaisi1 = scanner.nextInt();
-            int nombreSaisi2 = scanner.nextInt();
-            int nombreSaisi3 = scanner.nextInt();
+            String ligne = scanner.nextLine().trim();
 
-            // Vérifie la saisi
-            if (nombreSaisi1 >=1 && nombreSaisi1 <= mesDes.length || nombreSaisi2 >=1 && nombreSaisi2 <= mesDes.length || nombreSaisi3 >=1 && nombreSaisi3 <= mesDes.length) {
+            // Vérifie si la ligne est pleine
+            if (!ligne.isEmpty()) {
+                String[] parties = ligne.split("\\s+");
+                int index = 0;
 
-            } else {
-                System.out.println("Certain nombre saisi ne sont pas conforme.\nVeuillez recommencé.\n");
+                for (int i = 0; i < parties.length && index < NOMBRE_RELANCE_MAX; i++) {
+                    // Vérifie si la saisi est valide
+                    try {
+                        int valeur = Integer.parseInt(parties[i]);
+                        if (valeur >= 1 && valeur <= 5) {
+                            deARelancer[index++] = valeur;
+                        } else {
+                            System.out.println("La valeur '" + valeur + "' n'est est hors limite.");
+                            ressaisir = true;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("La valeur '" + parties[i] + "' n'est pas valide.");
+                        ressaisir = true;
+                    }
+                }
             }
+            if (ressaisir == true) {
+                System.out.println("Veuillez recommencer.");
+                Arrays.fill(deARelancer, 0);
 
-
-
-        } while (resaisir);
-
-
+            }
+        } while (ressaisir);
+        relancerDes(mesDes, deARelancer);
     }
 
 
