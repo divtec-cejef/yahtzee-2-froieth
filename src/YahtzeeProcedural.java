@@ -42,10 +42,10 @@ public class YahtzeeProcedural {
     /**
      * Relance les certains dés
      *
-     * @param mesDes
+     * @param mesDes Liste des dés
      */
     public static void relancerDes(int[] mesDes, int[] deARelancer) {
-        for (int i = 0; i < deARelancer.length; i++) {
+        for (int i = 0; i < NOMBRE_DES_A_LANCER; i++) {
             mesDes[deARelancer[i]] = lancerDe();
         }
     }
@@ -62,43 +62,30 @@ public class YahtzeeProcedural {
         do {
             // Tableau qui contient les dés à relanceruel
             int[] deARelancer = new int[NOMBRE_DES_A_LANCER];
-            boolean ressaisir = true;
-            do {
-                ressaisir = false;
 
-                System.out.print("\nDé à relancer : ");
-                String ligne = scanner.nextLine().trim();
+            System.out.print("\nDé à relancer : ");
+            String ligne = scanner.nextLine().trim();
 
-                // Vérifie si la ligne est pleine
-                if (!ligne.isEmpty()) {
-                    String[] parties = ligne.split("\\s+");
-                    int index = 0;
+            // Vérifie si la ligne est pleine
+            if (!ligne.isEmpty()) {
+                String[] parties = ligne.split("\\s+");
+                int index = 0;
 
-                    for (int i = 0; i < parties.length; i++) {
-                        int valeur = Integer.parseInt(parties[i]);
-                        deARelancer[index++] = valeur - 1;
-                    }
-                    relancerDes(mesDes, deARelancer);
-                } else {
-                    finRelance = true;
+                for (String party : parties) {
+                    int valeur = Integer.parseInt(party);
+                    deARelancer[index++] = valeur - 1;
                 }
-                if (ressaisir == true) {
-                    System.out.println("Veuillez recommencer.");
-                    // Vide le tableau
-                    for (int i = 0; i < deARelancer.length; i++) {
-                        deARelancer[i] = 0;
-                    }
-                }
-            } while (ressaisir);
+                relancerDes(mesDes, deARelancer);
+            } else {
+                finRelance = true;
+            }
             afficherDes(mesDes);
             nbreBoucle--;
-            for (int i = 0; i < deARelancer.length; i++) {
-                deARelancer[i] = 0;
-            }
+            Arrays.fill(deARelancer, 0);
             if (nbreBoucle == 0) {
                 finRelance = true;
             }
-        } while (finRelance == false);
+        } while (!finRelance);
     }
 
 
