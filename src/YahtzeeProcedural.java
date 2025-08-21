@@ -81,6 +81,7 @@ public class YahtzeeProcedural {
             } else {
                 finRelance = true;
             }
+            System.out.println("Nouvelle combinaison");
             afficherDes(mesDes);
             nbreBoucle--;
             //Arrays.fill(deARelancer, 0);
