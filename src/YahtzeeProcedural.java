@@ -55,44 +55,26 @@ public class YahtzeeProcedural {
      *
      * @param mesDes Liste dans laqelle sont stockés les dés
      */
-    public static void demandeRelancerDes(int[] mesDes) {
-        Scanner scanner = new Scanner(System.in);
-        int nbreBoucle = NOMBRE_RELANCE_MAX;
-        boolean finRelance = false;
-        do {
-            // Tableau qui contient les dés à relanceruel
-            //int[] deARelancer = new int[NOMBRE_DES_A_LANCER];
+    public static void demandeRelancerDes(int[] mesDes, String ligne) {
 
-            System.out.print("\nDé à relancer : ");
-            String ligne = scanner.nextLine().trim();
+        // Vérifie si la ligne est pleine
+        if (!ligne.isEmpty()) {
+            String[] parties = ligne.split("\\s+");
+            int[] deARelancer = new int[parties.length];
+            System.out.println();
 
-            // Vérifie si la ligne est pleine
-            if (!ligne.isEmpty()) {
-                String[] parties = ligne.split("\\s+");
-                int[] deARelancer = new int[parties.length];
-                System.out.println();
-
-                int index = 0;
-                for (String party : parties) {
-                    int valeur = Integer.parseInt(party);
-                    deARelancer[index++] = valeur - 1;
-                }
-                relancerDes(mesDes, deARelancer, index);
-
-                System.out.println("Nouvelle combinaison");
-                afficherDes(mesDes);
-
-            } else {
-                finRelance = true;
+            int index = 0;
+            for (String party : parties) {
+                int valeur = Integer.parseInt(party);
+                deARelancer[index++] = valeur - 1;
             }
-            nbreBoucle--;
-            //Arrays.fill(deARelancer, 0);
-            if (nbreBoucle == 0) {
-                finRelance = true;
-            }
-        } while (!finRelance);
+            relancerDes(mesDes, deARelancer, index);
+
+            System.out.println("Nouvelle combinaison");
+            afficherDes(mesDes);
+
+        }
     }
-
 
     /**
      * Caclcule les combinaison possible
@@ -133,73 +115,78 @@ public class YahtzeeProcedural {
 
     /**
      * Détecte les combinaisons possible
-     * @param suiteMax La suite maximum
+     *
+     * @param suiteMax  La suite maximum
      * @param occurence Le nombre d'occurence pour chaque face du dé
      */
     public static void detecterCombinaison(int suiteMax, int[] occurence) {
 
         // Vérifie les combinaison des occurence
         boolean unePaire = false;
-        boolean deuxPaire = false;
         boolean brelan = false;
+
+        int pointsUnePaire = 0;
+        int pointsDeuxPaires = 0;
         int pointsBrelan = 0;
-        boolean carre = false;
         int pointsCarre = 0;
-        boolean fullHouse = false;
-        boolean yahtzee = false;
+        int pointsFullHouse = 0;
+        int pointsYahtzee = 0;
 
         for (int i = 0; i < occurence.length; i++) {
 
             // Vérifie si il y a deux paire
             if (occurence[i] == 2 && unePaire) {
-                deuxPaire = true;
+                pointsDeuxPaires = 10;
             }
 
             // Vérifie si il y a une paire
             if (occurence[i] == 2) {
                 unePaire = true;
+                pointsUnePaire = 5;
             }
 
             // Vérifie si il y a un brelan
             if (occurence[i] == 3) {
                 brelan = true;
-                pointsBrelan = (i+1) * 3;
+                pointsBrelan = (i + 1) * 3;
             }
 
             // Vérifie si il y a un carré
             if (occurence[i] == 4) {
-                carre = true;
-                pointsCarre = (i+1) * 4;
+                pointsCarre = (i + 1) * 4;
             }
 
             // Vérifie si il y a un yahtzee
             if (occurence[i] == 5) {
-                yahtzee = true;
+                pointsYahtzee = 50;
             }
         }
 
         // Vérifie si il y a un Full House
         if (brelan && unePaire) {
-            fullHouse = true;
+            pointsFullHouse = 25;
         }
 
         // Vérifie les combinaisons de suite
-        boolean petiteSuite = false;
-        boolean grandeSuite = false;
+        int pointsPetiteSuite = 0;
+        int pointsGrandeSuite = 0;
+
         if (suiteMax == 4) {
-            petiteSuite = true;
+            pointsPetiteSuite = 30;
         } else if (suiteMax == 5) {
-            grandeSuite = true;
+            pointsGrandeSuite = 40;
         }
 
-        if (unePaire) { System.out.println("Une paire : 5 pts"); }
-        if (deuxPaire) { System.out.println("Deux paire : 10 pts");}
-        if (brelan) { System.out.println("Brelan : " + pointsBrelan + " pts");}
-        if (carre) { System.out.println("Carré : " + pointsCarre + " pts");}
-        if (fullHouse) { System.out.println("Full House : 25 pts");}
-        if (petiteSuite) { System.out.println("Petite suite : 30 pts");}
-        if (grandeSuite) { System.out.println("Grande suite : 40 pts");}
-        if (yahtzee) { System.out.println("Yahtzee : 50 pts");}
+        System.out.println();
+            System.out.println("1) Une paire    : " + pointsUnePaire + " pts");
+            System.out.println("2) Deux paires  : " + pointsDeuxPaires + " pts");
+            System.out.println("3) Brelan       : " + pointsBrelan + " pts");
+            System.out.println("4) Carré        : " + pointsCarre + " pts");
+            System.out.println("5) Full House   : " + pointsFullHouse + " pts");
+            System.out.println("6) Petite suite : " + pointsPetiteSuite + " pts");
+            System.out.println("7) Grande suite : " + pointsGrandeSuite + " pts");
+            System.out.println("8) Yahtzee      : " + pointsYahtzee + " pts");
+
     }
 
 
@@ -207,7 +194,21 @@ public class YahtzeeProcedural {
         int[] mesDes = new int[NOMBRE_DES_A_LANCER];
         lancerPlusieursDes(mesDes);
         afficherDes(mesDes);
-        demandeRelancerDes(mesDes);
+
+        boolean finrelance = false;
+        int nbreBoucle = 0;
+        do {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("\nDé à relancer : ");
+            String ligne = scanner.nextLine();
+            demandeRelancerDes(mesDes, ligne);
+            nbreBoucle++;
+
+            if (ligne.isEmpty() || nbreBoucle == NOMBRE_RELANCE_MAX) {
+                finrelance = true;
+            }
+        } while (!finrelance);
+
         calculeCombinaison(mesDes);
     }
 }
