@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class YahtzeeProcedural {
@@ -35,8 +36,8 @@ public class YahtzeeProcedural {
         for (int i = 0; i < mesDes.length; i++) {
             System.out.print("[" + (i + 1) + "]" + mesDes[i] + "\t");
         }
+        System.out.println();
     }
-
 
     /**
      * Relance les certains dés
@@ -48,7 +49,6 @@ public class YahtzeeProcedural {
             mesDes[deARelancer[i]] = lancerDe();
         }
     }
-
 
     /**
      * Demande à l'utilisateur les dés qu'il veut relancer et les relances
@@ -70,6 +70,7 @@ public class YahtzeeProcedural {
             if (!ligne.isEmpty()) {
                 String[] parties = ligne.split("\\s+");
                 int[] deARelancer = new int[parties.length];
+                System.out.println();
 
                 int index = 0;
                 for (String party : parties) {
@@ -78,11 +79,12 @@ public class YahtzeeProcedural {
                 }
                 relancerDes(mesDes, deARelancer, index);
 
+                System.out.println("Nouvelle combinaison");
+                afficherDes(mesDes);
+
             } else {
                 finRelance = true;
             }
-            System.out.println("Nouvelle combinaison");
-            afficherDes(mesDes);
             nbreBoucle--;
             //Arrays.fill(deARelancer, 0);
             if (nbreBoucle == 0) {
@@ -92,13 +94,123 @@ public class YahtzeeProcedural {
     }
 
 
+    /**
+     * Caclcule les combinaison possible
+     *
+     * @param mesDes Liste dans laqelle sont stockés les dés
+     */
+    public static void calculeCombinaison(int[] mesDes) {
+        // Calcule la suite maximum
+        // Trie les dés
+        Arrays.sort(mesDes);
+        int suiteMax = 1;
+        int suite = 1;
+
+        for (int i = 1; i < mesDes.length; i++) {
+            if (mesDes[i] == mesDes[i - 1] + 1) {
+                suite++;
+                suiteMax = Math.max(suiteMax, suite);
+            } else if (mesDes[i] != mesDes[i - 1]) {
+                suite = 1;
+            }
+        }
+
+        //System.out.println("Suite max = " + suiteMax);
+
+
+        // Calcule le nombre d'occurence pour chaque face
+        int[] occurence = new int[NOMBRE_FACE_DE];
+        for (int i = 1; i <= NOMBRE_FACE_DE; i++) {
+            for (int j = 0; j < mesDes.length; j++) {
+                if (mesDes[j] == i) {
+                    occurence[i - 1]++;
+                }
+            }
+            //System.out.println("Occurence de " + i + " = " + occurence[i - 1]);
+        }
+        detecterCombinaison(suiteMax, occurence);
+    }
+
+    /**
+     * Détecte les combinaisons possible
+     * @param suiteMax La suite maximum
+     * @param occurence Le nombre d'occurence pour chaque face du dé
+     */
+    public static void detecterCombinaison(int suiteMax, int[] occurence) {
+
+        // Vérifie les combinaison des occurence
+        boolean unePaire = false;
+        boolean deuxPaire = false;
+        boolean brelan = false;
+        int pointsBrelan = 0;
+        boolean carre = false;
+        int pointsCarre = 0;
+        boolean fullHouse = false;
+        boolean yahtzee = false;
+
+        for (int i = 0; i < occurence.length; i++) {
+
+            // Vérifie si il y a deux paire
+            if (occurence[i] == 2 && unePaire) {
+                deuxPaire = true;
+            }
+
+            // Vérifie si il y a une paire
+            if (occurence[i] == 2) {
+                unePaire = true;
+            }
+
+            // Vérifie si il y a un brelan
+            if (occurence[i] == 3) {
+                brelan = true;
+                pointsBrelan = (i+1) * 3;
+            }
+
+            // Vérifie si il y a un carré
+            if (occurence[i] == 4) {
+                carre = true;
+                pointsCarre = (i+1) * 4;
+            }
+
+            // Vérifie si il y a un yahtzee
+            if (occurence[i] == 5) {
+                yahtzee = true;
+            }
+        }
+
+        // Vérifie si il y a un Full House
+        if (brelan && unePaire) {
+            fullHouse = true;
+        }
+
+        // Vérifie les combinaisons de suite
+        boolean petiteSuite = false;
+        boolean grandeSuite = false;
+        if (suiteMax == 4) {
+            petiteSuite = true;
+        } else if (suiteMax == 5) {
+            grandeSuite = true;
+        }
+
+        if (unePaire) { System.out.println("Une paire : 5 pts"); }
+        if (deuxPaire) { System.out.println("Deux paire : 10 pts");}
+        if (brelan) { System.out.println("Brelan : " + pointsBrelan + " pts");}
+        if (carre) { System.out.println("Carré : " + pointsCarre + " pts");}
+        if (fullHouse) { System.out.println("Full House : 25 pts");}
+        if (petiteSuite) { System.out.println("Petite suite : 30 pts");}
+        if (grandeSuite) { System.out.println("Grande suite : 40 pts");}
+        if (yahtzee) { System.out.println("Yahtzee : 50 pts");}
+    }
+
+
     public static void main(String[] args) {
         int[] mesDes = new int[NOMBRE_DES_A_LANCER];
         lancerPlusieursDes(mesDes);
         afficherDes(mesDes);
         demandeRelancerDes(mesDes);
-
-
+        calculeCombinaison(mesDes);
     }
 }
+
+
 
