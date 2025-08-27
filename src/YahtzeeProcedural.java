@@ -1,3 +1,4 @@
+import java.security.spec.RSAOtherPrimeInfo;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -113,6 +114,134 @@ public class YahtzeeProcedural {
         detecterCombinaison(suiteMax, occurence);
     }
 
+
+    /**
+     * Vérifie si il y a une paire
+     *
+     * @param occurence      Nombre d'occurence pour chaque face du dé
+     * @param pointsUnePaire le nombre de points obtenu pour une paire
+     */
+    public static boolean avoirUnePaire(int[] occurence, int pointsUnePaire) {
+        boolean unePaire = false;
+        for (int i = 0; i < occurence.length; i++) {
+            if (occurence[i] == 2) {
+                unePaire = true;
+                pointsUnePaire = 5;
+            }
+        }
+        System.out.println("1) Une paire    : " + pointsUnePaire + " pts");
+        return unePaire;
+    }
+
+    /**
+     * Vérifie si il y a deux paire
+     *
+     * @param occurence        Nombre d'occurence pour chaque face du dé
+     * @param pointsDeuxPaires le nombre de points obtenu pour deux paire
+     */
+    public static void avoirDeuxPaire(int[] occurence, int pointsDeuxPaires) {
+        boolean unePaire = false;
+        for (int i = 0; i < occurence.length; i++) {
+            if (occurence[i] == 2) {
+                if (unePaire) {
+                    pointsDeuxPaires = 10;
+                }
+                unePaire = true;
+            }
+        }
+        System.out.println("2) Deux paires  : " + pointsDeuxPaires + " pts");
+    }
+
+    /**
+     * Vérifie si il y a un brelan
+     *
+     * @param occurence    Nombre d'occurence pour chaque face du dé
+     * @param pointsBrelan le nombre de points obtenu pour un brelan
+     */
+    public static boolean avoirBrelan(int[] occurence, int pointsBrelan) {
+        boolean brelan = false;
+        for (int i = 0; i < occurence.length; i++) {
+            if (occurence[i] == 3) {
+                brelan = true;
+                pointsBrelan = (i + 1) * 3;
+            }
+        }
+        System.out.println("3) Brelan       : " + pointsBrelan + " pts");
+        return brelan;
+    }
+
+    /**
+     * Vérifie si il y a un carré
+     *
+     * @param occurence   Nombre d'occurence pour chaque face du dé
+     * @param pointsCarre le nombre de points obtenu pour un brelan
+     */
+    public static void avoirCarre(int[] occurence, int pointsCarre) {
+        for (int i = 0; i < occurence.length; i++) {
+            if (occurence[i] == 4) {
+                pointsCarre = (i + 1) * 4;
+            }
+        }
+        System.out.println("4) Carré        : " + pointsCarre + " pts");
+    }
+
+    /**
+     * Vérifie si il y a un Full House
+     *
+     * @param occurence       Nombre d'occurence pour chaque face du dé
+     * @param pointsFullHouse le nombre de points obtenu pour un brelan
+     */
+    public static void avoirFullHouse(int[] occurence, int pointsFullHouse, boolean unePaire, boolean brelan) {
+        for (int i = 0; i < occurence.length; i++) {
+            if (brelan && unePaire) {
+                pointsFullHouse = 25;
+            }
+        }
+        System.out.println("5) Full House   : " + pointsFullHouse + " pts");
+    }
+
+    /**
+     * Vérifie si il y a une petite suite
+     *
+     * @param suiteMax          La suite maximum
+     * @param pointsPetiteSuite le nombre de points obtenu pour un brelan
+     */
+    public static void avoirPetiteSuite(int suiteMax, int pointsPetiteSuite) {
+        if (suiteMax == 4) {
+            pointsPetiteSuite = 30;
+        }
+        System.out.println("6) Petite suite : " + pointsPetiteSuite + " pts");
+    }
+
+    /**
+     * Vérifie si il y a une grande suite
+     *
+     * @param suiteMax          La suite maximum
+     * @param pointsGrandeSuite le nombre de points obtenu pour un brelan
+     */
+    public static void avoirGrandeSuite(int suiteMax, int pointsGrandeSuite) {
+        if (suiteMax == 5) {
+            pointsGrandeSuite = 40;
+        }
+        System.out.println("7) Grande suite : " + pointsGrandeSuite + " pts");
+    }
+
+    /**
+     * Vérifie si il y a un yathzee
+     *
+     * @param occurence     Nombre d'occurence pour chaque face du dé
+     * @param pointsYahtzee le nombre de points obtenu pour un brelan
+     */
+    public static void avoirYathzee(int[] occurence, int pointsYahtzee) {
+        for (int i = 0; i < occurence.length; i++) {
+            if (occurence[i] == 5) {
+                pointsYahtzee = 50;
+            }
+        }
+        System.out.println("8) Yahtzee      : " + pointsYahtzee + " pts");
+    }
+
+
     /**
      * Détecte les combinaisons possible
      *
@@ -122,70 +251,41 @@ public class YahtzeeProcedural {
     public static void detecterCombinaison(int suiteMax, int[] occurence) {
 
         // Vérifie les combinaison des occurence
-        boolean unePaire = false;
-        boolean brelan = false;
-
         int pointsUnePaire = 0;
         int pointsDeuxPaires = 0;
         int pointsBrelan = 0;
         int pointsCarre = 0;
         int pointsFullHouse = 0;
-        int pointsYahtzee = 0;
-
-        for (int i = 0; i < occurence.length; i++) {
-
-            // Vérifie si il y a deux paire
-            if (occurence[i] == 2 && unePaire) {
-                pointsDeuxPaires = 10;
-            }
-
-            // Vérifie si il y a une paire
-            if (occurence[i] == 2) {
-                unePaire = true;
-                pointsUnePaire = 5;
-            }
-
-            // Vérifie si il y a un brelan
-            if (occurence[i] == 3) {
-                brelan = true;
-                pointsBrelan = (i + 1) * 3;
-            }
-
-            // Vérifie si il y a un carré
-            if (occurence[i] == 4) {
-                pointsCarre = (i + 1) * 4;
-            }
-
-            // Vérifie si il y a un yahtzee
-            if (occurence[i] == 5) {
-                pointsYahtzee = 50;
-            }
-        }
-
-        // Vérifie si il y a un Full House
-        if (brelan && unePaire) {
-            pointsFullHouse = 25;
-        }
-
-        // Vérifie les combinaisons de suite
         int pointsPetiteSuite = 0;
         int pointsGrandeSuite = 0;
+        int pointsYahtzee = 0;
 
-        if (suiteMax == 4) {
-            pointsPetiteSuite = 30;
-        } else if (suiteMax == 5) {
-            pointsGrandeSuite = 40;
-        }
-
+        // Fais un retour à la ligne
         System.out.println();
-            System.out.println("1) Une paire    : " + pointsUnePaire + " pts");
-            System.out.println("2) Deux paires  : " + pointsDeuxPaires + " pts");
-            System.out.println("3) Brelan       : " + pointsBrelan + " pts");
-            System.out.println("4) Carré        : " + pointsCarre + " pts");
-            System.out.println("5) Full House   : " + pointsFullHouse + " pts");
-            System.out.println("6) Petite suite : " + pointsPetiteSuite + " pts");
-            System.out.println("7) Grande suite : " + pointsGrandeSuite + " pts");
-            System.out.println("8) Yahtzee      : " + pointsYahtzee + " pts");
+
+        // Vérifie si il y a une paire
+        boolean unePaire = avoirUnePaire(occurence, pointsUnePaire);
+
+        // Vérifie si il y a deux paire
+        avoirDeuxPaire(occurence, pointsDeuxPaires);
+
+        // Vérifie si il y a un brelan
+        boolean brelan = avoirBrelan(occurence, pointsBrelan);
+
+        // Vérifie si il y a un carré
+        avoirCarre(occurence, pointsCarre);
+
+        // Vérifie si il y a un Full House
+        avoirFullHouse(occurence, pointsFullHouse, unePaire, brelan);
+
+        // Vérifie si il y a une petite suite
+        avoirPetiteSuite(suiteMax, pointsPetiteSuite);
+
+        // Vérifie si il y a une grande suite
+        avoirGrandeSuite(suiteMax, pointsGrandeSuite);
+
+        // Vérifie si il y a un yahtzee
+        avoirYathzee(occurence, pointsYahtzee);
 
     }
 
