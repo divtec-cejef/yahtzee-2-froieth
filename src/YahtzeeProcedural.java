@@ -6,6 +6,7 @@ public class YahtzeeProcedural {
     public static final int NOMBRE_FACE_DE = 6;
     public static final int NOMBRE_DES_A_LANCER = 5;
     public static final int NOMBRE_RELANCE_MAX = 2;
+    public static final int NOMBRE_COMBINAISON_MAX = 8;
 
     /**
      * Lance un dé
@@ -82,7 +83,7 @@ public class YahtzeeProcedural {
      *
      * @param mesDes Liste dans laqelle sont stockés les dés
      */
-    public static void calculeCombinaison(int[] mesDes) {
+    public static void calculeCombinaison(int[] mesDes, int[] points, boolean[] combinaisonUtilisable) {
         // Calcule la suite maximum
         // Trie les dés
         Arrays.sort(mesDes);
@@ -111,207 +112,222 @@ public class YahtzeeProcedural {
             }
             //System.out.println("Occurence de " + i + " = " + occurence[i - 1]);
         }
-        detecterCombinaison(suiteMax, occurence);
-    }
-
-
-    /**
-     * Vérifie si il y a une paire
-     *
-     * @param occurence      Nombre d'occurence pour chaque face du dé
-     * @param pointsUnePaire le nombre de points obtenu pour une paire
-     */
-    public static boolean avoirUnePaire(int[] occurence, int pointsUnePaire) {
-        boolean unePaire = false;
-        for (int i = 0; i < occurence.length; i++) {
-            if (occurence[i] == 2) {
-                unePaire = true;
-                pointsUnePaire = 5;
-            }
-        }
-        System.out.println("1) Une paire    : " + pointsUnePaire + " pts");
-        return unePaire;
+        detecterCombinaison(suiteMax, occurence, points, combinaisonUtilisable);
     }
 
     /**
      * Vérifie si il y a deux paire
      *
-     * @param occurence        Nombre d'occurence pour chaque face du dé
-     * @param pointsDeuxPaires le nombre de points obtenu pour deux paire
+     * @param occurence Nombre d'occurence pour chaque face du dé
+     * @param points    Liste qui stock les résultats des combinaison possible
      */
-    public static void avoirDeuxPaire(int[] occurence, int pointsDeuxPaires) {
+    public static void avoirDeuxPaire(int[] occurence, int[] points) {
         boolean unePaire = false;
         for (int i = 0; i < occurence.length; i++) {
             if (occurence[i] == 2) {
                 if (unePaire) {
-                    pointsDeuxPaires = 10;
+                    points[1] = 10;
                 }
                 unePaire = true;
             }
         }
-        System.out.println("2) Deux paires  : " + pointsDeuxPaires + " pts");
+        System.out.println("2) Deux paires  : " + points[1] + " pts");
     }
 
     /**
-     * Vérifie si il y a un brelan
+     * Vérifie si il y a un carré
      *
-     * @param occurence    Nombre d'occurence pour chaque face du dé
-     * @param pointsBrelan le nombre de points obtenu pour un brelan
+     * @param occurence Nombre d'occurence pour chaque face du dé
+     * @param points    Liste qui stock les résultats des combinaison possible
      */
-    public static boolean avoirBrelan(int[] occurence, int pointsBrelan) {
+    public static void avoirCarre(int[] occurence, int[] points) {
+        for (int i = 0; i < occurence.length; i++) {
+            if (occurence[i] == 4) {
+                points[3] = (i + 1) * 4;
+            }
+        }
+        System.out.println("4) Carré        : " + points[3] + " pts");
+    }
+
+    /**
+     * Vérifie si il y a un Full House
+     *
+     * @param occurence Nombre d'occurence pour chaque face du dé
+     * @param points    Liste qui stock les résultats des combinaison possible
+     */
+    public static void avoirFullHouse(int[] occurence, int[] points, boolean unePaire, boolean brelan) {
+        for (int i = 0; i < occurence.length; i++) {
+            if (brelan && unePaire) {
+                points[4] = 25;
+            }
+        }
+        System.out.println("5) Full House   : " + points[4] + " pts");
+    }
+
+    /**
+     * Vérifie si il y a une petite suite
+     *
+     * @param suiteMax La suite maximum
+     * @param points   Liste qui stock les résultats des combinaison possible
+     */
+    public static void avoirPetiteSuite(int suiteMax, int[] points) {
+        if (suiteMax == 4) {
+            points[5] = 30;
+        }
+        System.out.println("6) Petite suite : " + points[5] + " pts");
+    }
+
+    /**
+     * Vérifie si il y a une grande suite
+     *
+     * @param suiteMax La suite maximum
+     * @param points   Liste qui stock les résultats des combinaison possible
+     */
+    public static void avoirGrandeSuite(int suiteMax, int[] points) {
+        if (suiteMax == 5) {
+            points[6] = 40;
+        }
+        System.out.println("7) Grande suite : " + points[6] + " pts");
+    }
+
+    /**
+     * Vérifie si il y a un yathzee
+     *
+     * @param occurence Nombre d'occurence pour chaque face du dé
+     * @param points    Liste qui stock les résultats des combinaison possible
+     */
+    public static void avoirYathzee(int[] occurence, int[] points) {
+        for (int i = 0; i < occurence.length; i++) {
+            if (occurence[i] == 5) {
+                points[7] = 50;
+            }
+        }
+        System.out.println("8) Yahtzee      : " + points[7] + " pts");
+    }
+
+
+    /**
+     * Détecte les combinaisons possible
+     * La fonction est lancé depuis calculerCombinaison
+     *
+     * @param suiteMax  La suite maximum
+     * @param occurence Le nombre d'occurence pour chaque face du dé
+     */
+    public static void detecterCombinaison(int suiteMax, int[] occurence, int[] points, boolean[] combinaisonUtilisable) {
+
+        boolean unePaire = false;
         boolean brelan = false;
+
+        // Vide le tableau
+        Arrays.fill(points, 0);
+
+        // Fais un retour à la ligne
+        System.out.println();
+
+        // Vérifie si il y a une paire et si la combinaison est encore utiliasble
+        for (int i = 0; i < occurence.length; i++) {
+            if (occurence[i] == 2) {
+                unePaire = true;
+            }
+        }
+        if (combinaisonUtilisable[0]) {
+            if (unePaire) {
+                points[0] = 5;
+            }
+            System.out.println("1) Une paire    : " + points[0] + " pts");
+        }
+
+        // Vérifie si il y a deux paire et si la combinaison est encore utiliasble
+        if (combinaisonUtilisable[1]) {
+            avoirDeuxPaire(occurence, points);
+        }
+
+        // Vérifie si il y a un brelan et si la combinaison est encore utiliasble
+        int pointsBrelan = 0;
         for (int i = 0; i < occurence.length; i++) {
             if (occurence[i] == 3) {
                 brelan = true;
                 pointsBrelan = (i + 1) * 3;
             }
         }
-        System.out.println("3) Brelan       : " + pointsBrelan + " pts");
-        return brelan;
-    }
-
-    /**
-     * Vérifie si il y a un carré
-     *
-     * @param occurence   Nombre d'occurence pour chaque face du dé
-     * @param pointsCarre le nombre de points obtenu pour un brelan
-     */
-    public static void avoirCarre(int[] occurence, int pointsCarre) {
-        for (int i = 0; i < occurence.length; i++) {
-            if (occurence[i] == 4) {
-                pointsCarre = (i + 1) * 4;
+        if (combinaisonUtilisable[2]) {
+            if (brelan) {
+                points[2] = pointsBrelan;
             }
+            System.out.println("3) Brelan       : " + points[2] + " pts");
         }
-        System.out.println("4) Carré        : " + pointsCarre + " pts");
-    }
-
-    /**
-     * Vérifie si il y a un Full House
-     *
-     * @param occurence       Nombre d'occurence pour chaque face du dé
-     * @param pointsFullHouse le nombre de points obtenu pour un brelan
-     */
-    public static void avoirFullHouse(int[] occurence, int pointsFullHouse, boolean unePaire, boolean brelan) {
-        for (int i = 0; i < occurence.length; i++) {
-            if (brelan && unePaire) {
-                pointsFullHouse = 25;
-            }
+        // Vérifie si il y a un carré et si la combinaison est encore utiliasble
+        if (combinaisonUtilisable[3]) {
+            avoirCarre(occurence, points);
         }
-        System.out.println("5) Full House   : " + pointsFullHouse + " pts");
-    }
 
-    /**
-     * Vérifie si il y a une petite suite
-     *
-     * @param suiteMax          La suite maximum
-     * @param pointsPetiteSuite le nombre de points obtenu pour un brelan
-     */
-    public static void avoirPetiteSuite(int suiteMax, int pointsPetiteSuite) {
-        if (suiteMax == 4) {
-            pointsPetiteSuite = 30;
+        // Vérifie si il y a un Full House et si la combinaison est encore utiliasble
+        if (combinaisonUtilisable[4]) {
+            avoirFullHouse(occurence, points, unePaire, brelan);
         }
-        System.out.println("6) Petite suite : " + pointsPetiteSuite + " pts");
-    }
 
-    /**
-     * Vérifie si il y a une grande suite
-     *
-     * @param suiteMax          La suite maximum
-     * @param pointsGrandeSuite le nombre de points obtenu pour un brelan
-     */
-    public static void avoirGrandeSuite(int suiteMax, int pointsGrandeSuite) {
-        if (suiteMax == 5) {
-            pointsGrandeSuite = 40;
+        // Vérifie si il y a une petite suite et si la combinaison est encore utiliasble
+        if (combinaisonUtilisable[5]) {
+            avoirPetiteSuite(suiteMax, points);
         }
-        System.out.println("7) Grande suite : " + pointsGrandeSuite + " pts");
-    }
 
-    /**
-     * Vérifie si il y a un yathzee
-     *
-     * @param occurence     Nombre d'occurence pour chaque face du dé
-     * @param pointsYahtzee le nombre de points obtenu pour un brelan
-     */
-    public static void avoirYathzee(int[] occurence, int pointsYahtzee) {
-        for (int i = 0; i < occurence.length; i++) {
-            if (occurence[i] == 5) {
-                pointsYahtzee = 50;
-            }
+        // Vérifie si il y a une grande suite et si la combinaison est encore utiliasble
+        if (combinaisonUtilisable[6]) {
+            avoirGrandeSuite(suiteMax, points);
         }
-        System.out.println("8) Yahtzee      : " + pointsYahtzee + " pts");
-    }
 
-
-    /**
-     * Détecte les combinaisons possible
-     *
-     * @param suiteMax  La suite maximum
-     * @param occurence Le nombre d'occurence pour chaque face du dé
-     */
-    public static void detecterCombinaison(int suiteMax, int[] occurence) {
-
-        // Vérifie les combinaison des occurence
-        int pointsUnePaire = 0;
-        int pointsDeuxPaires = 0;
-        int pointsBrelan = 0;
-        int pointsCarre = 0;
-        int pointsFullHouse = 0;
-        int pointsPetiteSuite = 0;
-        int pointsGrandeSuite = 0;
-        int pointsYahtzee = 0;
-
-        // Fais un retour à la ligne
-        System.out.println();
-
-        // Vérifie si il y a une paire
-        boolean unePaire = avoirUnePaire(occurence, pointsUnePaire);
-
-        // Vérifie si il y a deux paire
-        avoirDeuxPaire(occurence, pointsDeuxPaires);
-
-        // Vérifie si il y a un brelan
-        boolean brelan = avoirBrelan(occurence, pointsBrelan);
-
-        // Vérifie si il y a un carré
-        avoirCarre(occurence, pointsCarre);
-
-        // Vérifie si il y a un Full House
-        avoirFullHouse(occurence, pointsFullHouse, unePaire, brelan);
-
-        // Vérifie si il y a une petite suite
-        avoirPetiteSuite(suiteMax, pointsPetiteSuite);
-
-        // Vérifie si il y a une grande suite
-        avoirGrandeSuite(suiteMax, pointsGrandeSuite);
-
-        // Vérifie si il y a un yahtzee
-        avoirYathzee(occurence, pointsYahtzee);
+        // Vérifie si il y a un yahtzee et si la combinaison est encore utiliasble
+        if (combinaisonUtilisable[7]) {
+            avoirYathzee(occurence, points);
+        }
 
     }
 
 
     public static void main(String[] args) {
-        int[] mesDes = new int[NOMBRE_DES_A_LANCER];
-        lancerPlusieursDes(mesDes);
-        afficherDes(mesDes);
+        // Permet de savoir les combinaisons encore utilisable ou non
+        boolean[] combinaisonUtilisable = new boolean[NOMBRE_COMBINAISON_MAX];
+        Arrays.fill(combinaisonUtilisable, true);
 
-        boolean finrelance = false;
-        int nbreBoucle = 0;
+
+        // Affiche le score total
+        int scoreTotal = 0;
+
         do {
+            System.out.println("\nScore : " + scoreTotal + "\n");
+
+            // Lance et affiche les dés
+            int[] mesDes = new int[NOMBRE_DES_A_LANCER];
+            lancerPlusieursDes(mesDes);
+            afficherDes(mesDes);
+
+            // Demande et relance les dés souhaités
+            boolean finrelance = false;
+            int nbreBoucle = 0;
+            do {
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("\nDé à relancer : ");
+                String ligne = scanner.nextLine();
+                demandeRelancerDes(mesDes, ligne);
+                nbreBoucle++;
+
+                if (ligne.isEmpty() || nbreBoucle == NOMBRE_RELANCE_MAX) {
+                    finrelance = true;
+                }
+            } while (!finrelance);
+
+            int[] points = new int[NOMBRE_COMBINAISON_MAX];
+            calculeCombinaison(mesDes, points, combinaisonUtilisable);
+
+            // Demande à l'utilisateur la combinaison qu'il souhaite choisir
             Scanner scanner = new Scanner(System.in);
-            System.out.print("\nDé à relancer : ");
-            String ligne = scanner.nextLine();
-            demandeRelancerDes(mesDes, ligne);
-            nbreBoucle++;
+            System.out.print("Combinaison choisie : ");
+            int saisi = scanner.nextInt();
+            // Supprime la combinaison choisie des combinaisons utilisable
+            combinaisonUtilisable[saisi - 1] = false;
+            scoreTotal += points[saisi - 1];
 
-            if (ligne.isEmpty() || nbreBoucle == NOMBRE_RELANCE_MAX) {
-                finrelance = true;
-            }
-        } while (!finrelance);
+        } while (true);
 
-        calculeCombinaison(mesDes);
     }
 }
-
-
-
