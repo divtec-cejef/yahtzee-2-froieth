@@ -7,6 +7,7 @@ public class YahtzeeProcedural {
     public static final int NOMBRE_DES_A_LANCER = 5;
     public static final int NOMBRE_RELANCE_MAX = 2;
     public static final int NOMBRE_COMBINAISON_MAX = 8;
+    public static final int NOMBRE_MANCHE_MAX = 5;
 
     /**
      * Lance un dé
@@ -293,8 +294,9 @@ public class YahtzeeProcedural {
         // Affiche le score total
         int scoreTotal = 0;
 
-        do {
-            System.out.println("\nScore : " + scoreTotal + "\n");
+        for(int i = 0; i < NOMBRE_MANCHE_MAX; i++) {
+
+            System.out.println("\nManche " + (i+1) + "\t\t\t" + "Score total : " + scoreTotal);
 
             // Lance et affiche les dés
             int[] mesDes = new int[NOMBRE_DES_A_LANCER];
@@ -321,13 +323,15 @@ public class YahtzeeProcedural {
 
             // Demande à l'utilisateur la combinaison qu'il souhaite choisir
             Scanner scanner = new Scanner(System.in);
-            System.out.print("Combinaison choisie : ");
+            System.out.print("\nCombinaison choisie : ");
             int saisi = scanner.nextInt();
             // Supprime la combinaison choisie des combinaisons utilisable
             combinaisonUtilisable[saisi - 1] = false;
             scoreTotal += points[saisi - 1];
 
-        } while (true);
+            System.out.println("\n+ " + points[saisi - 1] + " points");
 
+        }
+        System.out.println("\nScore final :  " + scoreTotal);
     }
 }
