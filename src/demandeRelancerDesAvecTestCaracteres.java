@@ -3,7 +3,7 @@
  *
  * @param mesDes Liste dans laqelle sont stockés les dés
  */
-public static void demandeRelancerDes(int[] mesDes) {
+/*public static void demandeRelancerDes(int[] mesDes) {
     Scanner scanner = new Scanner(System.in);
     int nbreBoucle = NOMBRE_RELANCE_MAX;
     boolean finRelance = false;
@@ -58,4 +58,60 @@ public static void demandeRelancerDes(int[] mesDes) {
             finRelance = true;
         }
     } while (finRelance == false);
-}
+}*/
+
+
+
+
+
+// Demande relancer dé 2eme version
+/**
+ * Demande à l'utilisateur les dés qu'il veut relancer et les relances
+ *
+ * @param mesDes Liste dans laqelle sont stockés les dés
+ */
+/*    public static void demandeRelancerDes(int[] mesDes) {
+        Scanner scanner = new Scanner(System.in);
+        int nbreBoucle = NOMBRE_RELANCE_MAX;
+        boolean finRelance = false;
+        do {
+            // Tableau qui contient les dés à relanceruel
+            //int[] deARelancer = new int[NOMBRE_DES_A_LANCER];
+
+            System.out.print("\nDé à relancer : ");
+            String ligne = scanner.nextLine().trim();
+
+            // Vérifie si la ligne est pleine
+            if (!ligne.isEmpty()) {
+                String[] parties = ligne.split("\\s+");
+                int[] deARelancer = new int[parties.length];
+                System.out.println();
+
+                int index = 0;
+                for (String party : parties) {
+                    int valeur = Integer.parseInt(party);
+                    deARelancer[index++] = valeur - 1;
+                }
+                relancerDes(mesDes, deARelancer, index);
+
+                System.out.println("Nouvelle combinaison");
+                afficherDes(mesDes);
+
+            } else {
+                finRelance = true;
+            }
+            nbreBoucle--;
+            //Arrays.fill(deARelancer, 0);
+            if (nbreBoucle == 0) {
+                finRelance = true;
+            }
+        } while (!finRelance);
+    }
+*/
+
+
+
+
+
+
+
