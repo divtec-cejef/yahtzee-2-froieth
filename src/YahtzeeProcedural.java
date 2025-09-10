@@ -53,11 +53,11 @@ public class YahtzeeProcedural {
     }
 
     /**
-     * Demande à l'utilisateur les dés qu'il veut relancer et les relances
+     * Relance les dé
      *
      * @param mesDes Liste dans laqelle sont stockés les dés
      */
-    public static void demandeRelancerDes(int[] mesDes, String ligne) {
+    public static void relancerDes(int[] mesDes, String ligne) {
 
         // Vérifie si la ligne est pleine
         if (!ligne.isEmpty()) {
@@ -76,6 +76,46 @@ public class YahtzeeProcedural {
             afficherDes(mesDes);
 
         }
+    }
+
+    /**
+     * Demande et relance les dés souhaités
+     *
+     * @param mesDes Liste des dés de l'utilisateur
+     */
+    public static void demandeRelancerDes(int[] mesDes) {
+        boolean finrelance = false;
+        int nbreBoucle = 0;
+        do {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("\nDé à relancer : ");
+            String ligne = scanner.nextLine();
+            relancerDes(mesDes, ligne);
+            nbreBoucle++;
+
+            if (ligne.isEmpty() || nbreBoucle == NOMBRE_RELANCE_MAX) {
+                finrelance = true;
+            }
+        } while (!finrelance);
+    }
+
+    /**
+     * Prend les points de la combinaison souhaité
+     *
+     * @param combinaisonUtilisable Tableau booléen pour savoir si la combinaison est utilisable ou non
+     * @param points                Les nombre de points pour chaque combinaison
+     * @return le score de la manche
+     */
+    public static int choisirCombinaison(boolean[] combinaisonUtilisable, int[] points) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("\nCombinaison choisie : ");
+        int saisi = scanner.nextInt();
+        // Supprime la combinaison choisie des combinaisons utilisable
+        combinaisonUtilisable[saisi - 1] = false;
+        int score = points[saisi - 1];
+
+        System.out.println("\n+ " + score + " points");
+        return score;
     }
 
     /**
@@ -125,7 +165,6 @@ public class YahtzeeProcedural {
      * Vérifie si il y a une paire
      *
      * @param occurence Nombre d'occurence pour chaque face du dé
-     * @param points    Liste qui stock les résultats des combinaison possible
      */
     public static boolean avoirUnePaire(int[] occurence) {
         boolean unePaire = false;
@@ -265,15 +304,18 @@ public class YahtzeeProcedural {
      */
     public static int pointsCombinaison(String cats, int[] occurence, int suiteMax) {
 
+        int brelan = avoirBrelan(occurence);
+        int carre = avoirCarre(occurence);
+
         switch (cats) {
             case "Une paire":
                 return avoirUnePaire(occurence) ? 5 : 0;
             case "Deux paire":
                 return avoirDeuxPaire(occurence) ? 10 : 0;
             case "Brelan":
-                return avoirBrelan(occurence) == 0 ? 0 : avoirBrelan(occurence);
+                return brelan == 0 ? 0 : brelan;
             case "Carré":
-                return avoirCarre(occurence) == 0 ? 0 : avoirCarre(occurence);
+                return carre == 0 ? 0 : carre;
             case "Full House":
                 return avoirFullHouse(occurence) ? 25 : 0;
             case "Petite suite":
@@ -288,6 +330,27 @@ public class YahtzeeProcedural {
 
     }
 
+    /**
+     * Affiche les combinaison encore possible
+     *
+     * @param mesDes                Dés du joueur
+     * @param cats                  Les catégories des combinaison
+     * @param combinaisonUtilisable Tableau booléen pour savoir si la combinaison est utilisable ou non
+     * @param points                Les nombre de points pour chaque combinaison
+     * @param occurence             Le nombre d'occurence de chaque face
+     */
+    public static void afficherCombinaison(int[] mesDes, String[] cats, boolean[] combinaisonUtilisable, int[] points, int[] occurence) {
+        int suiteMax = calculeSuiteMax(mesDes);
+
+        for (int j = 0; j < cats.length; j++) {
+            if (combinaisonUtilisable[j]) {
+                String cat = cats[j];
+                points[j] = pointsCombinaison(cat, occurence, suiteMax);
+                System.out.println((j + 1) + ") " + cat + " : " + points[j]);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         // Catégorie
         String[] cats = {"Une paire", "Deux paire", "Brelan", "Carré", "Full House", "Petite suite", "Grande suite", "Yahtzee"};
@@ -295,7 +358,6 @@ public class YahtzeeProcedural {
         // Permet de savoir les combinaisons encore utilisable ou non
         boolean[] combinaisonUtilisable = new boolean[NOMBRE_COMBINAISON_MAX];
         Arrays.fill(combinaisonUtilisable, true);
-
 
         // Affiche le score total
         int scoreTotal = 0;
@@ -310,44 +372,14 @@ public class YahtzeeProcedural {
             lancerPlusieursDes(mesDes);
             afficherDes(mesDes);
 
-            // Demande et relance les dés souhaités
-            boolean finrelance = false;
-            int nbreBoucle = 0;
-            do {
-                Scanner scanner = new Scanner(System.in);
-                System.out.print("\nDé à relancer : ");
-                String ligne = scanner.nextLine();
-                demandeRelancerDes(mesDes, ligne);
-                nbreBoucle++;
-
-                if (ligne.isEmpty() || nbreBoucle == NOMBRE_RELANCE_MAX) {
-                    finrelance = true;
-                }
-            } while (!finrelance);
+            demandeRelancerDes(mesDes);
 
             int[] points = new int[NOMBRE_COMBINAISON_MAX];
-            int suiteMax = calculeSuiteMax(mesDes);
             int[] occurence = calculeOccurence(mesDes);
 
+            afficherCombinaison(mesDes, cats, combinaisonUtilisable, points, occurence);
 
-            // Affiche les combinaison encore possible
-            for (int j = 0; j < cats.length; j++) {
-                if (combinaisonUtilisable[j]) {
-                    String cat = cats[j];
-                    points[j] = pointsCombinaison(cat, occurence, suiteMax);
-                    System.out.println((j + 1) + ") " + cat + " : " + points[j]);
-                }
-            }
-
-            // Demande à l'utilisateur la combinaison qu'il souhaite choisir
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("\nCombinaison choisie : ");
-            int saisi = scanner.nextInt();
-            // Supprime la combinaison choisie des combinaisons utilisable
-            combinaisonUtilisable[saisi - 1] = false;
-            scoreTotal += points[saisi - 1];
-
-            System.out.println("\n+ " + points[saisi - 1] + " points");
+            scoreTotal += choisirCombinaison(combinaisonUtilisable, points);
 
         }
         System.out.println("\nScore final :  " + scoreTotal);
