@@ -15,4 +15,11 @@ public class Die {
     public int getFaceVisible() {
         return faceVisible;
     }
+
+    /**
+     * @return le nombre de face du dé
+     */
+    public int getNombreDeFace() {
+        return nombreDeFace;
+    }
 }

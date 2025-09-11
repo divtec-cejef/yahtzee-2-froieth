@@ -16,6 +16,8 @@ public class Round {
 
         System.out.println();
 
+        System.out.println("Suite max : " + diceHand.calculerSuiteMax());
+        System.out.println("Occurence max : " + diceHand.calculerOccurenceMax());
 
     }
 

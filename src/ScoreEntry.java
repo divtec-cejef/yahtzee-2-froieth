@@ -1,2 +1,21 @@
 public class ScoreEntry {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
