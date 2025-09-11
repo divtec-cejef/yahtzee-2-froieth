@@ -6,7 +6,7 @@ public class DiceHand {
     Die des = new Die();
     private int[] mesDes = new int[nombreDes];
     private boolean[] combinaison = new boolean[3]; // [0] -> unePaire  |  [1] -> deuxPaires  |  [2] -> fullHouse
-    private int[] pointsBrelanEtCarre = new int[2]; // [] -> points brean  |  [1] -> points carré
+    private int[] pointsBrelanEtCarre = new int[2]; // [0] -> points brean  |  [1] -> points carré
 
     /**
      * @return un affichage de la liste des dés de l'utilisateur
