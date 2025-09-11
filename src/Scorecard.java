@@ -1,7 +1,7 @@
 public class Scorecard {
 
     private DiceHand diceHand;
-    private ScoreEntry scoreEntry = new ScoreEntry(diceHand);
+    private ScoreEntry scoreEntry;
 
     /**
      * Constructeur de la classe Scorecard
@@ -9,6 +9,7 @@ public class Scorecard {
      */
     public Scorecard(DiceHand diceHand) {
         this.diceHand = diceHand;
+        this.scoreEntry = new ScoreEntry(diceHand);
     }
 
 

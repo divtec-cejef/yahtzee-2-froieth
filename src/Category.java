@@ -1,9 +1,13 @@
 public enum Category {
 
+    // TODO : le full house ne fonctionne pas + quand il y a full house il devrait aussi y avoir une paire
+
+
+
     UNE_PAIRE{
         public int score(DiceHand diceHand) {
-            System.out.print("1) Une paire : ");
-            return diceHand.calculerOccurenceMax() == 2 ? 0 : 5;
+            System.out.print("1) Une paire    : ");
+            return diceHand.calculerOccurenceMax() == 2 ? 5 : 0;
         }
 
         public boolean utilisable() {
@@ -13,8 +17,8 @@ public enum Category {
 
     DEUX_PAIRE{
         public int score(DiceHand diceHand) {
-            System.out.print("2) Deux paire : ");
-            return diceHand.getDeuxPaire() ? 0 : 10;
+            System.out.print("2) Deux paire   : ");
+            return diceHand.getDeuxPaire() ? 10 : 0;
         }
 
         public boolean utilisable() {
@@ -24,8 +28,8 @@ public enum Category {
 
     BRELAN{
         public int score(DiceHand diceHand) {
-            System.out.print("3) Brelan : ");
-            return diceHand.calculerOccurenceMax() == 3 ? 0 : diceHand.getPointsBrelan();
+            System.out.print("3) Brelan       : ");
+            return diceHand.calculerOccurenceMax() == 3 ? diceHand.getPointsBrelan() : 0;
         }
 
         public boolean utilisable() {
@@ -35,8 +39,8 @@ public enum Category {
 
     CARRE{
         public int score(DiceHand diceHand) {
-            System.out.print("4) Carré : ");
-            return diceHand.calculerOccurenceMax() == 4 ? 0 : diceHand.getPointsCarre();
+            System.out.print("4) Carré        : ");
+            return diceHand.calculerOccurenceMax() == 4 ? diceHand.getPointsCarre() : 0;
         }
 
         public boolean utilisable() {
@@ -46,8 +50,8 @@ public enum Category {
 
     FULL_HOUSE{
         public int score(DiceHand diceHand) {
-            System.out.print("5) Full House : ");
-            return diceHand.getFullHouse() ? 0 : 25;
+            System.out.print("5) Full House   : ");
+            return diceHand.getFullHouse() ? 25 : 0;
         }
 
         public boolean utilisable() {
@@ -58,7 +62,7 @@ public enum Category {
     PETITE_SUITE{
         public int score(DiceHand diceHand) {
             System.out.print("6) Petite suite : ");
-            return diceHand.calculerSuiteMax() == 4 ? 0 : 30;
+            return diceHand.calculerSuiteMax() == 4 ? 30 : 0;
         }
 
         public boolean utilisable() {
@@ -69,7 +73,7 @@ public enum Category {
     GRANTE_SUITE{
         public int score(DiceHand diceHand) {
             System.out.print("7) Grande suite : ");
-            return diceHand.calculerSuiteMax() == 5 ? 0 : 40;
+            return diceHand.calculerSuiteMax() == 5 ? 40 : 0;
         }
 
         public boolean utilisable() {
@@ -79,8 +83,8 @@ public enum Category {
 
     YAHTZEE{
         public int score(DiceHand diceHand) {
-            System.out.print("8) Yahtzee : ");
-            return diceHand.calculerOccurenceMax() == 5 ? 0 : 50;
+            System.out.print("8) Yahtzee      : ");
+            return diceHand.calculerOccurenceMax() == 5 ? 50 : 0;
         }
 
         public boolean utilisable() {

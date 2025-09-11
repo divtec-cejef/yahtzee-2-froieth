@@ -128,10 +128,11 @@ public class DiceHand {
                         combinaison[1] = true;
                     }
                 }
+                // TODO : refaire brelan pour brelan de 1
                 if(occurenceMax == 3){
-                    pointsBrelanEtCarre[0] = i * 3;
+                    pointsBrelanEtCarre[0] = mesDes[j] * 3;
                 } else if(occurenceMax == 4){
-                    pointsBrelanEtCarre[1] = i * 4;
+                    pointsBrelanEtCarre[1] = mesDes[j] * 4;
                 }
             }
             occurence = 0;
