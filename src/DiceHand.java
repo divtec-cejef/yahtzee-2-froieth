@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class DiceHand {
 
     final private int nombreDes = 5;
@@ -15,11 +17,24 @@ public class DiceHand {
     }
 
     /**
-     * @return La liste des dés de l'utilisateur
+     * @param index L'index du dé à retourner
+     * @return Le dé de l'utilisateur à l'index donné
      */
-    public int[] getMesDes() {
-        return mesDes;
+    public int getDes(int index) {
+        return mesDes[index];
     }
 
+    /**
+     * @return un affichage de la liste des dés de l'utilisateur
+     */
+    @Override
+    public String toString() {
+        String affichage = "";
 
+        for (int i = 0; i < nombreDes; i++) {
+            affichage +=("[" + (i + 1) + "]" + mesDes[i] + "\t");
+        }
+
+        return affichage;
+    }
 }

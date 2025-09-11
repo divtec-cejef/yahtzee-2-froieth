@@ -1,22 +1,9 @@
 public class YhatzeeOOApp  {
     public static void main(String[] args) {
 
+        // TODO : faire quand l'utilisateur doit choisir si il ne choisit rien ça prend la combinaison avec le plus de points
 
-        // Tests
-        DiceHand diceHand =  new DiceHand();
-        diceHand.lancerDes();
-
-        int[] mesDes = diceHand.getMesDes();
-
-        for(int i =0; i<mesDes.length; i++){
-            System.out.print("[" + (i + 1) + "]" + mesDes[i] + "\t");
-        }
-
-
-
-
-
-
-        
+        Game game = new Game();
+        game.jouerPartie();
     }
 }
