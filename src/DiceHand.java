@@ -31,6 +31,13 @@ public class DiceHand {
     }
 
     /**
+     * @return vrai si il y a une paire, false sinon
+     */
+    public boolean getUnePaire() {
+        return combinaison[0];
+    }
+
+    /**
      * @return vrai si il y a deux paire, false sinon
      */
     public boolean getDeuxPaire() {
@@ -62,6 +69,7 @@ public class DiceHand {
      * Lance les dés
      */
     public void lancerDes() {
+        //mesDes = new int[]{3, 4, 5, 6, 1};
         for (int i = 0; i < 5; i++) {
             des.lancerDe();
             this.mesDes[i] = des.getFaceVisible();
@@ -72,7 +80,7 @@ public class DiceHand {
      * Lance un dés un fonction de l'index donné
      * @param index Index du dé à relancer
      */
-    public void lancerDe(int index) {
+    public void relancerDe(int index) {
         des.lancerDe();
         this.mesDes[index] = des.getFaceVisible();
     }
@@ -122,24 +130,24 @@ public class DiceHand {
                 if (mesDes[j] == i) {
                     occurence++;
                     occurenceMax = Math.max(occurenceMax, occurence);
-                        // unePaire
+
                     if (combinaison[0] && occurence == 2){
                         // deuxPaires
                         combinaison[1] = true;
                     }
                 }
-                // TODO : refaire brelan pour brelan de 1
-                if(occurenceMax == 3){
-                    pointsBrelanEtCarre[0] = mesDes[j] * 3;
-                } else if(occurenceMax == 4){
-                    pointsBrelanEtCarre[1] = mesDes[j] * 4;
+                if(occurenceMax == 3 && pointsBrelanEtCarre[0] == 0){
+                    pointsBrelanEtCarre[0] = i * 3;
+                    combinaison[1] = false;
+                } else if(occurenceMax == 4 && pointsBrelanEtCarre[1] == 0){
+                    pointsBrelanEtCarre[1] = i * 4;
                 }
             }
-            occurence = 0;
-            if (occurenceMax == 2) {
+            if(occurence == 2) {
                 // unePaire
                 combinaison[0] = true;
             }
+            occurence = 0;
         }
             // unePaire
         if (combinaison[0] && occurenceMax == 3) {

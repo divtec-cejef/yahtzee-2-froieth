@@ -1,13 +1,10 @@
 public enum Category {
 
-    // TODO : le full house ne fonctionne pas + quand il y a full house il devrait aussi y avoir une paire
-
-
-
+    //TODO : faire la fonction si la variable est encore utilisable
     UNE_PAIRE{
         public int score(DiceHand diceHand) {
             System.out.print("1) Une paire    : ");
-            return diceHand.calculerOccurenceMax() == 2 ? 5 : 0;
+            return diceHand.getUnePaire() ? 5 : 0;
         }
 
         public boolean utilisable() {
