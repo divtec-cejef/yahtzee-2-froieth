@@ -1,3 +1,5 @@
+import java.io.Console;
+
 public class Game {
 
     Round round = new Round();
@@ -5,7 +7,7 @@ public class Game {
     public void jouerPartie() {
         for (int i = 0; i < 5; i++) {
             System.out.println("\nManche " + (i + 1) + "\t\t\t" + "Score total : " + 0);
-            round.jouerManche();
+            round.jouerManche(i);
         }
     }
 

@@ -31,13 +31,6 @@ public class DiceHand {
     }
 
     /**
-     * @return vrai si il y a une paire, false sinon
-     */
-    public boolean getUnePaire() {
-        return combinaison[0];
-    }
-
-    /**
      * @return vrai si il y a deux paire, false sinon
      */
     public boolean getDeuxPaire() {
@@ -69,11 +62,11 @@ public class DiceHand {
      * Lance les dés
      */
     public void lancerDes() {
-        //mesDes = new int[]{3, 4, 5, 6, 1};
-        for (int i = 0; i < 5; i++) {
+        mesDes = new int[]{4, 4, 4, 4, 6};
+        /*for (int i = 0; i < 5; i++) {
             des.lancerDe();
             this.mesDes[i] = des.getFaceVisible();
-        }
+        }*/
     }
 
     /**

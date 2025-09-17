@@ -4,7 +4,7 @@ public enum Category {
     UNE_PAIRE{
         public int score(DiceHand diceHand) {
             System.out.print("1) Une paire    : ");
-            return diceHand.getUnePaire() ? 5 : 0;
+            return diceHand.calculerOccurenceMax() == 2 || diceHand.getFullHouse() ? 5 : 0;
         }
 
         public boolean utilisable() {
@@ -59,7 +59,7 @@ public enum Category {
     PETITE_SUITE{
         public int score(DiceHand diceHand) {
             System.out.print("6) Petite suite : ");
-            return diceHand.calculerSuiteMax() == 4 ? 30 : 0;
+            return diceHand.calculerSuiteMax() >= 4 ? 30 : 0;
         }
 
         public boolean utilisable() {
