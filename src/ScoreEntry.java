@@ -41,7 +41,7 @@ public class ScoreEntry {
      * @param index Index de la catégorie souhaité
      * @return la validité de la catégorie de l'index donné
      */
-    public boolean getCatUtilisable(int index) {
-        return cats[index].utilisable();
+    public String getCatAfficherNom(int index) {
+        return cats[index].afficherNom();
     }
 }

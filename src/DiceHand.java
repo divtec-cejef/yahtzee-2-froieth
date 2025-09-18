@@ -3,7 +3,8 @@ import java.util.Arrays;
 public class DiceHand {
 
     final private int nombreDes = 5;
-    Die des = new Die();
+    private ConsoleIO console = new ConsoleIO();
+    private Die des = new Die();
     private int[] mesDes = new int[nombreDes];
     private boolean[] combinaison = new boolean[3]; // [0] -> unePaire  |  [1] -> deuxPaires  |  [2] -> fullHouse
     private int[] pointsBrelanEtCarre = new int[2]; // [0] -> points brean  |  [1] -> points carré
@@ -62,21 +63,36 @@ public class DiceHand {
      * Lance les dés
      */
     public void lancerDes() {
-        mesDes = new int[]{4, 4, 4, 4, 6};
-        /*for (int i = 0; i < 5; i++) {
+        //mesDes = new int[]{4, 4, 4, 4, 6};
+        for (int i = 0; i < 5; i++) {
             des.lancerDe();
             this.mesDes[i] = des.getFaceVisible();
-        }*/
+        }
     }
 
     /**
-     * Lance un dés un fonction de l'index donné
-     * @param index Index du dé à relancer
+     * Relance les dés souhaité
+     * @param saisi
      */
-    public void relancerDe(int index) {
-        des.lancerDe();
-        this.mesDes[index] = des.getFaceVisible();
+    public void relancerDes(String saisi) {
+
+            String[] parties = saisi.split("\\s+");
+            int[] deARelancer = new int[parties.length];
+            console.afficherRetourLigne();
+
+            int index = 0;
+            for (String party : parties) {
+                int valeur = Integer.parseInt(party);
+                deARelancer[index++] = valeur - 1;
+            }
+
+            // Relance les dés
+            for (int i = 0; i < index; i++) {
+                des.lancerDe();
+                this.mesDes[deARelancer[i]] = des.getFaceVisible();
+            }
     }
+
 
     /**
      * Calcule la suite maximum
@@ -150,6 +166,29 @@ public class DiceHand {
 
         return occurenceMax;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+
+    public void relancerDe(int index) {
+        //des.lancerDe();
+        //this.mesDes[index] = des.getFaceVisible();
+
+    }
+     */
+
+
 
 
 }

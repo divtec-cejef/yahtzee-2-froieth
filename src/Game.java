@@ -1,14 +1,20 @@
-import java.io.Console;
-
 public class Game {
 
-    Round round = new Round();
+    private ConsoleIO console = new ConsoleIO();
+    private Round round = new Round();
+    private int scoreTotal = 0;
 
     public void jouerPartie() {
+        //round.setScorecard();
+
         for (int i = 0; i < 5; i++) {
-            System.out.println("\nManche " + (i + 1) + "\t\t\t" + "Score total : " + 0);
+
+            console.afficher("\nManche " + (i + 1) + "\t\t\t" + "Score total : " + scoreTotal);
             round.jouerManche(i);
+            scoreTotal += round.getPointsManche();
         }
+
+        console.afficher("Score final : " +  scoreTotal);
     }
 
 
